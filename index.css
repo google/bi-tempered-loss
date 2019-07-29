@@ -1,0 +1,288 @@
+/* Copyright 2019 Google Inc. All Rights Reserved.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================*/
+
+body {
+  height: 100vh;
+  font-family: 'Roboto';
+  cursor: pointer;
+}
+
+div#tooltip {
+  position: absolute;
+  display: inline-block;
+  padding: 3px;
+  font: 10px Inconsolata, monospace;
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #999;
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1;
+}
+
+.content {
+  max-width: 600px;
+  margin: auto;
+  align-content: center;
+}
+
+.loss-plot {
+  align: center;
+}
+
+.title {
+  font-size: 0.6em;
+}
+
+h1 {
+  font-size: 1em;
+  text-align:
+}
+
+.active {
+  stroke: black;
+  stroke-width: 2px;
+  opacity: 1.0;
+}
+
+.canvas {
+  opacity: 0.7;
+}
+
+.svg-canvas {
+  display: block;
+  border-radius: 4px;
+  box-shadow: 0px 0px 4px 4px #ddd;
+  height: 256px;
+  width: 256px;
+}
+
+.trainingData {
+  stroke: white;
+  stroke-width: 1px;
+  z-index: 100;
+  opacity: 0.85;
+}
+
+.left-panel {
+  display: inline-block;
+  float: left;
+  max-width: 260px;
+}
+
+.right-panel {
+  display: inline-block;
+  float: left;
+  margin-left: 20px;
+  max-width: 320px;
+}
+
+.axis text {
+  font-size: 11px;
+}
+
+label {
+  font-size: 0.4em;
+}
+
+text {
+  font-size: 1em;
+}
+
+.row {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.citation {
+  font: 0.7em "Charter", serif;
+  margin-bottom: 20px;
+}
+
+.console {
+  font-size: 0.5em;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 2px;
+  margin-top: 16px;
+}
+
+.centered {
+  text-align: center;
+}
+
+path {
+  stroke: steelblue;
+  stroke-width: 2.0;
+  fill: none;
+}
+
+line {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.25);
+  shape-rendering: crispEdges;
+}
+
+ul {
+  padding: 0px 0px 0px 16px;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+li:last-child {
+  margin-bottom: 0px;
+}
+
+.tips {
+  font-size: 0.5em;
+  background-color: #eee;
+  padding: 8px 10px;
+  border-radius: 2px;
+  margin-top: 10px;
+}
+
+.status {
+  font: 0.6rem Inconsolata, monospace;
+}
+
+.radio-group {
+  display: block;
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 10px;
+  font-size: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font: 0.5rem sans-serif;
+}
+
+.radio-group input {
+  position: absolute;
+  opacity: 0;
+}
+
+.radio-selection {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  height: 10px;
+  width: 10px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+.radio-group:hover input~.radio-selection {
+  background-color: #ccc;
+}
+
+.radio-group input:checked~.radio-selection {
+  background-color: #2196F3;
+}
+
+.radio-selection:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.radio-group input:checked~.radio-selection:after {
+  display: block;
+}
+
+.radio-group .radio-selection:after {
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+.selection {
+  font-size: 0.6em;
+}
+
+.radio-buttons {
+  float: left;
+}
+
+.radio {
+  margin-right: 0px;
+  height: 10px;
+  width: 10px;
+}
+
+.radio-label {
+  height: 100%;
+  vertical-align: middle;
+}
+
+.slider {
+  display: block;
+  width: 120px;
+  margin-top: 5px;
+}
+
+.slider-label {
+  display: block;
+  text-align: center;
+  font: 0.5rem sans-serif;
+}
+
+.slider-group {
+  display: inline-block;
+}
+
+.slider-group.noise-level {
+  margin-left: 45px;
+  margin-top: 10px;
+  visibility: hidden;
+}
+
+.slider-group.t1 {
+  margin-right: 19px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 5px;
+  background: #eee;
+  outline: none;
+}
+
+.slider:hover {
+  background: #ccc;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #2196F3;
+}
+
+.slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #2196F3;
+}

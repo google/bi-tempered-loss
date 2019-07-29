@@ -1,0 +1,100 @@
+<!doctype html>
+<!-- Copyright 2016 Google Inc. All Rights Reserved.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Demo for Bi-Tempered Logistic Loss for Training Neural Nets with Noisy Data.</title>
+    <script src="robust_loss.js"></script>
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+  </head>
+  <body>
+    <div class="content">
+      <p class="row citation">
+          Demonstration of practical properties of "Robust Bi-Tempered Logistic Loss Based on Bregman Divergences", 2019,
+          <br>
+          Ehsan Amid,  Manfred K. Warmuth, Rohan Anil, Tomer Koren. <a href="http://arxiv.org/abs/1906.03361">Read manuscript.</a>
+      </p>
+      <div class="left-panel">
+        <div id="tooltip"></div>
+        <svg id="svg-canvas" name="loss-viz" class="svg-canvas"></svg>
+        <div class="console">
+          <div id="status" class="status">$</div>
+        </div>
+        <div class="tips">
+          <ul>
+            <li>This trains a 2-layer neural network of size [6, 3] and visualizes the decision boundary above.</li>
+            <li>Colors indicate the class label.</li>
+            <li>You can <strong>drag & drop</strong> points on the canvas to see how the model handles noisy data points.</li>
+            <li>You can also auto-generate noise levels using the options on the right.</li>
+            <li>On chrome *disabling* hardware acceleration speeds up training.</li>
+            <li>Please refresh the page when something breaks :)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="row">
+          <p class="selection">Select noise type:</p>
+          <div class="radio-buttons">
+            <label class="radio-group">No Noise
+              <input type="radio" name="noise-type" id="no-noise" class="radio" checked="true">
+              <span class="radio-selection"></span>
+            </label>
+            <label class="radio-group">Small Margin Noise
+              <input type="radio" name="noise-type" id="low-noise" class="radio">
+              <span class="radio-selection"></span>
+            </label>
+            <label class="radio-group">Large Margin Noise
+              <input type="radio" name="noise-type" id="high-noise" class="radio">
+              <span class="radio-selection"></span>
+            </label>
+            <label class="radio-group">Random Noise
+              <input type="radio" name="noise-type" id="random-noise" class="radio">
+              <span class="radio-selection"></span>
+            </label>
+          </div>
+          <div class="slider-group noise-level">
+            <label for="noise-level" class="slider-label">Noise Level = <span id="noise-value">10%</span>
+              <input type="range" min="10" max="30" value="10" class="slider" id="noise-level">
+            </label>
+          </div>
+        </div>
+        <div class="tips">
+          <ul>
+            <li>Decrease Temperature 1 to handle large margin noise.</li>
+            <li>Increase Temperature 2 to handle small margin noise.</li>
+          </ul>
+        </div>
+        <div class="row">
+          <p class="selection">Adjust temperature of loss function:</p>
+          <div class="slider-group t1">
+            <label for="t1" class="slider-label">Temperature 1 = <span id="t1-value">1.0</span>
+              <input type="range" min="1" max="100.0" value="100.0" class="slider" id="t1">
+            </label>
+          </div>
+          <div class="slider-group">
+            <label for="t2" class="slider-label">Temperature 2 = <span id="t2-value">1.0</span>
+              <input type="range" min="100.0" max="1000.0" value="100.0" class="slider" id="t2">
+            </label>
+          </div>
+        </div>
+        <div class="centered">
+          <svg id="loss-plot" class="loss-plot"></svg>
+        </div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+    <script src="loss_plot.js"></script>
+  </body>
+</html>
