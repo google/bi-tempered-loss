@@ -432,13 +432,13 @@ async function train() {
     var yDataset = tf.data.array(trainDataLabel)
     const xyDataset = tf.data.zip(
       {xs: xDataset, ys: yDataset}).batch(128);
-    for (let i = 1; i < 10; ++i) {
+    for (let i = 1; i < 20; ++i) {
         await model.fitDataset(xyDataset, {
             // batchSize: numTrainingPoints,
             epochs: 10,
             shuffle: false
         })
-        updateStatus("$ Training at [" + i * 100 + "/1000] epochs.")
+        updateStatus("$ Training at [" + i * 10 + "/200] epochs.")
         renderDecisionSurface(canvas, model)
     }
     updateStatus("$ Training done.")
