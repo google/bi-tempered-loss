@@ -52,6 +52,11 @@ function temperedSoftmax(activations, t, numIters = 5) {
     return expT(diff, t)
 }
 
+function temperedSigmoid(activations, t, numIters = 5) {
+    activations2d = tf.reshape(activations, [-1, 1])
+    internalLogits = tf.concat([tf.zerosLike(activations2d), activations2d], 1)
+    return temperedSoftmax(internalLogits, t, numIters)
+}
 
 function bitemperedLogisticLoss(activations, labels, t1, t2, numIters = 5) {
     probabilities = temperedSoftmax(activations, t2, numIters)

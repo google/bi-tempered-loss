@@ -310,7 +310,10 @@ canvas.on('mousemove', function(){
   var mouseY = d3.event.layerY || d3.event.offsety;
   current_xy = tf.tensor([[mouseX * scale_x / width, mouseY * scale_y / height]], [1, 2])
   activation = parseFloat(model.predict(current_xy).arraySync()[0])
-  pLabel = sigmoid(activation)
+  t2 = d3.select("#t2").property("value") / 100.0
+  activation_t = tf.tensor([activation], [1])
+  pLabel = tf.split(temperedSigmoid(activation_t, t2, 5), 2, 1)[1].arraySync()[0]
+
   d3.select('#tooltip')
     .style('opacity', 0.8)
     .style('top', d3.event.pageY + 5 + 'px')
@@ -403,7 +406,8 @@ async function renderDecisionSurface(canvas, model) {
     ctx = canvas.node().getContext("2d");
     ctx.globalAlpha = 0.2;
     var img = ctx.createImageData(num_samples, num_samples);
-    predictedLabels = tf.sigmoid(model.predict(testDataTensor)).arraySync()
+    t2 = d3.select("#t2").property("value") / 100.0
+    predictedLabels = tf.split(temperedSigmoid(model.predict(testDataTensor), t2, 5), 2, 1)[1].arraySync()
     i = -1;
     for (var y = 0, p = -1; y < num_samples; ++y) {
         for (var x = 0; x < num_samples; ++x) {
