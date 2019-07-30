@@ -16,9 +16,10 @@ body {
   cursor: pointer;
 }
 
-#tooltip {
+div#tooltip {
   position: absolute;
   display: inline-block;
+  z-index: 2;
   padding: 3px;
   font: 10px Inconsolata, monospace;
   color: #000;
@@ -27,17 +28,17 @@ body {
   border-radius: 2px;
   pointer-events: none;
   opacity: 0;
-  z-index: 1;
 }
 
 .content {
   max-width: 600px;
   margin: auto;
   align-content: center;
+  overflow: hidden;
 }
 
 .loss-plot {
-  align: center;
+  align-content: center;
 }
 
 .title {
@@ -89,6 +90,7 @@ canvas {
   display: inline-block;
   float: left;
   max-width: 260px;
+  align-content: center;
 }
 
 .right-panel {

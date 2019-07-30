@@ -28,6 +28,14 @@ function sigmoid(x) {
     return Number(val.toFixed(2))
 }
 
+function getTemperature1() {
+  return d3.select("#t1").property("value") / 100.0
+}
+
+function getTemperature2() {
+  return d3.select("#t2").property("value") / 100.0
+}
+
 function disableNoiseLevel() {
     d3.select("#noise-level").property("disabled", true);
     d3.select(".slider-group.noise-level").style("visibility", "hidden");
@@ -290,20 +298,20 @@ function render() {
 canvas = render()
 train()
 
-canvas.on('mousemove', function(){
+d3.select("#svg-canvas").on('mousemove', function(){
   var mouseX = d3.event.layerX || d3.event.offsetX;
   var mouseY = d3.event.layerY || d3.event.offsety;
   current_xy = tf.tensor([[mouseX * scale_x / width, mouseY * scale_y / height]], [1, 2])
   activation = parseFloat(model.predict(current_xy).arraySync()[0])
-  t2 = d3.select("#t2").property("value") / 100.0
+  t2 = getTemperature2()
   activation_t = tf.tensor([activation], [1])
-  pLabel = tf.split(temperedSigmoid(activation_t, t2, 5), 2, 1)[1].arraySync()[0]
+  pLabel = parseFloat(tf.split(temperedSigmoid(activation_t, t2, 5), 2, 1)[1].arraySync()[0])
 
   d3.select('#tooltip')
     .style('opacity', 0.8)
     .style('top', d3.event.pageY + 5 + 'px')
     .style('left', d3.event.pageX + 5 + 'px')
-    .html('activation: ' + Number(activation.toFixed(2)) + ' probability: ' + pLabel);
+    .html('activation: ' + Number(activation.toFixed(2)) + ' probability: ' + Number(pLabel.toFixed(4)));
 })
 
 canvas.on('mouseleave', function(){
@@ -317,8 +325,8 @@ canvas.on('mouseleave', function(){
 
 function createFeedForwardModel() {
     function custom_loss(y_obs, y_pred) {
-        t1 = d3.select("#t1").property("value") / 100.0
-        t2 = d3.select("#t2").property("value") / 100.0
+        t1 = getTemperature1()
+        t2 = getTemperature2()
         return tf.mean(bitemperedBinaryLogisticLoss(y_pred, y_obs, t1, t2))
     }
 
@@ -391,7 +399,7 @@ async function renderDecisionSurface(canvas, model) {
     ctx = canvas.node().getContext("2d");
     ctx.globalAlpha = 0.2;
     var img = ctx.createImageData(num_samples, num_samples);
-    t2 = d3.select("#t2").property("value") / 100.0
+    t2 = getTemperature2()
     predictedLabels = tf.split(temperedSigmoid(model.predict(testDataTensor), t2, 5), 2, 1)[1].arraySync()
     i = -1;
     for (var y = 0, p = -1; y < num_samples; ++y) {
