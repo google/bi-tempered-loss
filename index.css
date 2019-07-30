@@ -16,7 +16,7 @@ body {
   cursor: pointer;
 }
 
-div#tooltip {
+#tooltip {
   position: absolute;
   display: inline-block;
   padding: 3px;
@@ -55,11 +55,22 @@ h1 {
   opacity: 1.0;
 }
 
-.canvas {
+.svg-container {
+  height: 256px;
+  width: 256px;
+}
+
+canvas {
+  position: absolute;
+  z-index: 0;
   opacity: 0.7;
+  width: 256px;
+  height: 256px;
 }
 
 .svg-canvas {
+  position: absolute;
+  z-index: 1;
   display: block;
   border-radius: 4px;
   box-shadow: 0px 0px 4px 4px #ddd;

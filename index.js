@@ -262,30 +262,15 @@ function render() {
         .attr("height", height)
         .attr("width", width);
 
-    var foreignObject = svg.append("foreignObject")
+    var canvas = d3.select("#decision-surface-canvas")
         .attr("x", 0)
         .attr("y", 0)
-        .attr("width", width)
-        .attr("height", height);
-
-    var foreignBody = foreignObject.append("xhtml:body")
-        .style("margin", "0px")
-        .style("padding", "0px")
-        .style("background-color", "white")
-        .style("width", width + "px")
-        .style("height", height + "px")
-
-    var canvas = foreignBody.append("canvas")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("class", "canvas")
         .attr("width", num_samples)
         .attr("height", num_samples)
         .style("width", width + "px")
         .style("height", height + "px")
 
     renderTrainingData(svg, trainingDataPoints);
-
 
     d3.select("#no-noise").on("click", function() {
       generateCleanDataPoints(svg)
@@ -431,7 +416,7 @@ async function train() {
     var xDataset = tf.data.array(trainDataXY)
     var yDataset = tf.data.array(trainDataLabel)
     const xyDataset = tf.data.zip(
-      {xs: xDataset, ys: yDataset}).batch(128);
+      {xs: xDataset, ys: yDataset}).batch(256);
     for (let i = 1; i < 20; ++i) {
         await model.fitDataset(xyDataset, {
             // batchSize: numTrainingPoints,
