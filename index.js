@@ -9,7 +9,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
-
 tf.setBackend('cpu');
 
 function random_uniform(min, max) {
@@ -424,10 +423,9 @@ async function train() {
     var xDataset = tf.data.array(trainDataXY)
     var yDataset = tf.data.array(trainDataLabel)
     const xyDataset = tf.data.zip(
-      {xs: xDataset, ys: yDataset}).batch(256);
+      {xs: xDataset, ys: yDataset}).batch(512);
     for (let i = 1; i < 20; ++i) {
         await model.fitDataset(xyDataset, {
-            // batchSize: numTrainingPoints,
             epochs: 10,
             shuffle: false
         })
