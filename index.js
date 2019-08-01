@@ -313,7 +313,7 @@ d3.select("#svg-canvas").on('mousemove', function(){
     .html('activation: ' + Number(activation.toFixed(2)) + ' probability: ' + Number(pLabel.toFixed(4)));
 })
 
-canvas.on('mouseleave', function(){
+d3.select("#svg-canvas").on('mouseleave', function(){
   d3.select('#tooltip')
     .style('opacity', 0.0)
     .style('top', 0 + 'px')
@@ -423,7 +423,7 @@ async function train() {
     var xDataset = tf.data.array(trainDataXY)
     var yDataset = tf.data.array(trainDataLabel)
     const xyDataset = tf.data.zip(
-      {xs: xDataset, ys: yDataset}).batch(512);
+      {xs: xDataset, ys: yDataset}).batch(256);
     for (let i = 1; i < 20; ++i) {
         await model.fitDataset(xyDataset, {
             epochs: 10,
