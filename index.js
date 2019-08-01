@@ -49,6 +49,9 @@ function getNoiseLevel() {
     return d3.select("#noise-level").property("value") / 100.0
 }
 
+function shouldResetModel() {
+  return d3.select("#reset-weights").property("checked");
+}
 disableNoiseLevel()
 
 function updateStatus(statusMessage) {
@@ -445,8 +448,10 @@ function maybeTrain() {
 }
 
 function resetModel() {
-    model = createFeedForwardModel()
-    train()
+  if (shouldResetModel()) {
+    model = createFeedForwardModel();
+  }
+  train();
 }
 
 function duringDragging(d) {

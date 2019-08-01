@@ -96,6 +96,17 @@ limitations under the License.
         <div class="centered">
           <svg id="loss-plot" class="loss-plot"></svg>
         </div>
+          <p class="selection">Would you like to warmstart model parameters when data/temperature settings change?</p>
+          <div class="radio-buttons">
+            <label class="radio-group"> Yes, please reset the model.
+              <input type="radio" name="weight-settings" id="reset-weights" class="radio" checked="true">
+              <span class="radio-selection"></span>
+            </label>
+            <label class="radio-group"> No, continue training from the current model.  
+              <input type="radio" name="weight-settings" id="continue-weights" class="radio">
+              <span class="radio-selection"></span>
+            </label>
+          </div>
       </div>
     </div>
     <script src="index.js"></script>

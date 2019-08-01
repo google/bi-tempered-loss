@@ -41,8 +41,8 @@ var logisticLossDataset = d3.range(numLossPlotActivations).map(function(d) {
 updateDataset()
 
 function renderLossPlot() {
-    var width = 280;
-    var height = 200;
+    var width = 240;
+    var height = 160;
 
     const lossPlotSvg = d3.select('#loss-plot').attr("height", height)
         .attr("width", width);
