@@ -23,8 +23,6 @@ width = 256;
 height = 256;
 radius = 4;
 num_samples = 256
-scale_x = 1
-scale_y = 1
 
 function sigmoid(x) {
     var val = 1.0/(1.0+Math.pow(Math.E, -x));
@@ -113,6 +111,14 @@ d3.select("#noise-level").on("change", function() {
 
 });
 
+function isNoisyPoint(i, currentLabel) {
+    if (i % 2 == 0) {
+        return currentLabel == 0.0;
+    } else {
+        return currentLabel == 1.0;
+    }
+}
+
 const outerRingRadiusStart = 0.33
 const outerRingRadiusEnd = 0.48
 const innerRingRadiusEnd = 0.2
@@ -146,10 +152,21 @@ var trainingDataPoints = d3.range(numTrainingPoints).map(function(d) {
 });
 
 function renderTrainingData(svg, trainingDataPointsArg) {
+    var goodDataPoints = []
+    var noisyDataPoints = []
+    for (var i = 0; i < trainingDataPointsArg.length; ++i) {
+        if (isNoisyPoint(i, trainingDataPointsArg[i].label)) {
+            noisyDataPoints.push(trainingDataPointsArg[i])
+        } else {
+            goodDataPoints.push(trainingDataPointsArg[i])
+        }
+    }
+    var reorderedTrainingDataPoints = goodDataPoints.concat(noisyDataPoints)
+
     svg.selectAll("circle").remove();
 
     var td = svg.selectAll("circle")
-        .data(trainingDataPointsArg)
+        .data(reorderedTrainingDataPoints)
 
     td.enter().append("circle")
         .attr("cx", d => d.x)
@@ -279,8 +296,8 @@ function render() {
     var canvas = d3.select("#decision-surface-canvas")
         .attr("x", 0)
         .attr("y", 0)
-        .attr("width", num_samples)
-        .attr("height", num_samples)
+        .attr("width", width)
+        .attr("height", height)
         .style("width", width + "px")
         .style("height", height + "px")
 
@@ -391,12 +408,12 @@ color = d3.scaleQuantize()
 
 function generateTestData() {
   var testDataXY = []
-  for (var y = 0, p = -1; y < num_samples; ++y) {
-      for (var x = 0; x < num_samples; ++x) {
+  for (var y = 0, p = -1; y < height; ++y) {
+      for (var x = 0; x < width; ++x) {
           testDataXY.push(centerCoordinates([x, y]))
       }
   }
-  return tf.tensor(testDataXY, [num_samples * num_samples, 2])
+  return tf.tensor(testDataXY, [width * height, 2])
 }
 
 var testDataTensor = generateTestData();
@@ -404,12 +421,12 @@ var testDataTensor = generateTestData();
 async function renderDecisionSurface(canvas, model) {
     ctx = canvas.node().getContext("2d");
     ctx.globalAlpha = 0.2;
-    var img = ctx.createImageData(num_samples, num_samples);
+    var img = ctx.createImageData(width, height);
     t2 = getTemperature2()
     predictedLabels = tf.split(temperedSigmoid(model.predict(testDataTensor), t2, 5), 2, 1)[1].arraySync()
     i = -1;
-    for (var y = 0, p = -1; y < num_samples; ++y) {
-        for (var x = 0; x < num_samples; ++x) {
+    for (var y = 0, p = -1; y < height; ++y) {
+        for (var x = 0; x < width; ++x) {
             let c = d3.rgb(color(predictedLabels[++i]));
             img.data[++p] = c.r;
             img.data[++p] = c.g;
@@ -441,29 +458,6 @@ async function train() {
     }
     updateStatus("$ Training done.")
 }
-
-
-// async function train() {
-//     var trainDataXY = []
-//     var trainDataLabel = []
-//     for (var i = 0; i < trainingDataPoints.length; i++) {
-//         trainDataXY.push(centerCoordinates([trainingDataPoints[i].x, trainingDataPoints[i].y]))
-//         trainDataLabel.push(trainingDataPoints[i].label)
-//     }
-//     var xs = tf.tensor(trainDataXY, [numTrainingPoints, 2])
-//     var ys = tf.tensor(trainDataLabel, [numTrainingPoints])
-//     for (let i = 1; i < 20; ++i) {
-//         await model.fit(xs, ys, {
-//             batchSize: numTrainingPoints,
-//             epochs: 10,
-//             shuffle: false
-//         })
-//         updateStatus("$ Training at [" + i * 10 + "/100] epochs.")
-//         renderDecisionSurface(canvas, model)
-//     }
-//     updateStatus("$ Training done.")
-// }
-
 
 function maybeTrain() {
     if (no_active_points) {
