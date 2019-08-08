@@ -15,9 +15,13 @@ function random_uniform(min, max) {
     return Math.random() * (max - min) + min;
 }
 
+function centerCoordinates(xy) {
+    return [(xy[0] - 0.5 * width) * 14.0/width, (xy[1] - 0.5 * height) * 14.0/height]
+}
+
 width = 256;
 height = 256;
-radius = 5;
+radius = 4;
 num_samples = 256
 scale_x = 1
 scale_y = 1
@@ -114,7 +118,7 @@ const outerRingRadiusEnd = 0.48
 const innerRingRadiusEnd = 0.2
 const deltaRadius = 0.03
 var model = createFeedForwardModel()
-const numTrainingPoints = 768;
+const numTrainingPoints = 1000;
 
 var trainingDataPoints = d3.range(numTrainingPoints).map(function(d) {
     if (d % 2 == 0) {
@@ -303,7 +307,7 @@ train()
 d3.select("#svg-canvas").on('mousemove', function(){
   var mouseX = d3.event.layerX || d3.event.offsetX;
   var mouseY = d3.event.layerY || d3.event.offsety;
-  current_xy = tf.tensor([[mouseX * scale_x / width, mouseY * scale_y / height]], [1, 2])
+  current_xy = tf.tensor(centerCoordinates([mouseX, mouseY]), [1, 2])
   activation = parseFloat(model.predict(current_xy).arraySync()[0])
   t2 = getTemperature2()
   activation_t = tf.tensor([activation], [1])
@@ -334,21 +338,21 @@ function createFeedForwardModel() {
 
     var model = tf.sequential()
     model.add(tf.layers.dense({
-        units: 6,
-        kernelInitializer: 'glorotNormal',
+        units: 10,
+        kernelInitializer: 'randomNormal',
         inputShape: 2,
-        activation: 'tanh',
+        activation: 'relu',
         useBias: true
     }))
     model.add(tf.layers.dense({
-        units: 3,
-        kernelInitializer: 'glorotNormal',
-        activation: 'tanh',
+        units: 5,
+        kernelInitializer: 'randomNormal',
+        activation: 'relu',
         useBias: true
     }))
     model.add(tf.layers.dense({
         units: 1,
-        kernelInitializer: 'glorotNormal',
+        kernelInitializer: 'randomNormal',
         activation: 'linear',
         useBias: true
     }))
@@ -357,7 +361,7 @@ function createFeedForwardModel() {
     model.compile({
         optimizer: optimizer,
         loss: custom_loss,
-        shuffle: true
+        //shuffle: true
     })
     return model
 }
@@ -389,7 +393,7 @@ function generateTestData() {
   var testDataXY = []
   for (var y = 0, p = -1; y < num_samples; ++y) {
       for (var x = 0; x < num_samples; ++x) {
-          testDataXY.push([x * scale_x / width, y * scale_y / height])
+          testDataXY.push(centerCoordinates([x, y]))
       }
   }
   return tf.tensor(testDataXY, [num_samples * num_samples, 2])
@@ -420,23 +424,46 @@ async function train() {
     var trainDataXY = []
     var trainDataLabel = []
     for (var i = 0; i < trainingDataPoints.length; i++) {
-        trainDataXY.push([trainingDataPoints[i].x / width, trainingDataPoints[i].y / height])
+        trainDataXY.push(centerCoordinates([trainingDataPoints[i].x, trainingDataPoints[i].y]))
         trainDataLabel.push(trainingDataPoints[i].label)
     }
     var xDataset = tf.data.array(trainDataXY)
     var yDataset = tf.data.array(trainDataLabel)
     const xyDataset = tf.data.zip(
-      {xs: xDataset, ys: yDataset}).batch(256);
+      {xs: xDataset, ys: yDataset}).batch(1024);
     for (let i = 1; i < 20; ++i) {
         await model.fitDataset(xyDataset, {
             epochs: 10,
-            shuffle: false
+            shuffle: true
         })
         updateStatus("$ Training at [" + i * 10 + "/200] epochs.")
         renderDecisionSurface(canvas, model)
     }
     updateStatus("$ Training done.")
 }
+
+
+// async function train() {
+//     var trainDataXY = []
+//     var trainDataLabel = []
+//     for (var i = 0; i < trainingDataPoints.length; i++) {
+//         trainDataXY.push(centerCoordinates([trainingDataPoints[i].x, trainingDataPoints[i].y]))
+//         trainDataLabel.push(trainingDataPoints[i].label)
+//     }
+//     var xs = tf.tensor(trainDataXY, [numTrainingPoints, 2])
+//     var ys = tf.tensor(trainDataLabel, [numTrainingPoints])
+//     for (let i = 1; i < 20; ++i) {
+//         await model.fit(xs, ys, {
+//             batchSize: numTrainingPoints,
+//             epochs: 10,
+//             shuffle: false
+//         })
+//         updateStatus("$ Training at [" + i * 10 + "/100] epochs.")
+//         renderDecisionSurface(canvas, model)
+//     }
+//     updateStatus("$ Training done.")
+// }
+
 
 function maybeTrain() {
     if (no_active_points) {
