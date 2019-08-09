@@ -83,6 +83,12 @@ canvas {
   width: 256px;
 }
 
+.top-corner{
+ position:absolute;
+ top:0;
+ right:0;
+}
+
 .trainingData {
   stroke: white;
   stroke-width: 1px;
