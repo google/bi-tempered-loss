@@ -456,7 +456,13 @@ async function train() {
         updateStatus("$ Training at [" + i * 10 + "/200] epochs.")
         renderDecisionSurface(canvas, model)
     }
-    updateStatus("$ Training done.")
+    var weights = model.getWeights() 
+    var squaredNorm = tf.sum(tf.square(weights[0]))
+    for (var i = 1; i < weights.length; ++i) {
+        squaredNorm = tf.add(squaredNorm, tf.sum(tf.square(weights[i])))
+    }
+    // L2(w): " + tf.sqrt(squaredNorm).dataSync()
+    updateStatus("$ Done training.")
 }
 
 function maybeTrain() {

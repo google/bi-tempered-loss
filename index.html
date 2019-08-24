@@ -13,7 +13,7 @@ limitations under the License.
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Demo for Bi-Tempered Logistic Loss for Training Neural Nets with Noisy Data.</title>
+    <title>Demo for Bi-Tempered Logistic Loss for Training Neural Nets with Noisy Data. </title>
     <script src="robust_loss.js"></script>
     <script src="https://d3js.org/d3.v5.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
@@ -21,12 +21,14 @@ limitations under the License.
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-<a href="https://github.com/google/bi-tempered-loss" class="top-corner"><img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
     <div class="content">
       <p class="row citation">
           Demonstration of practical properties of "Robust Bi-Tempered Logistic Loss Based on Bregman Divergences", 2019,
           <br>
           Ehsan Amid,  Manfred K. Warmuth, Rohan Anil, Tomer Koren. <a href="http://arxiv.org/abs/1906.03361">Read manuscript.</a>
+          <a href="https://github.com/google/bi-tempered-loss" class="github-share-button">
+            <img src="GitHub-Mark-32px.png" alt="Link to GitHub">
+          </a>
       </p>
       <div class="left-panel">
         <div class="svg-container">
@@ -97,9 +99,9 @@ limitations under the License.
         <div class="centered">
           <svg id="loss-plot" class="loss-plot"></svg>
         </div>
-          <p class="selection">Would you like to warmstart model parameters when data/temperature settings change?</p>
+          <p class="selection">Warmstart model parameters when data/temperature settings change?</p>
           <div class="radio-buttons">
-            <label class="radio-group"> Yes, please reset the model.
+            <label class="radio-group"> Yes, reset the model parameters at the start of training.
               <input type="radio" name="weight-settings" id="reset-weights" class="radio" checked="true">
               <span class="radio-selection"></span>
             </label>

@@ -313,3 +313,14 @@ li:last-child {
   border-radius: 50%;
   background: #2196F3;
 }
+
+.github-share-button {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+.github-share-button img {
+    width: 16px;
+    height: 16px;
+  }
