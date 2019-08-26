@@ -49,3 +49,6 @@ When referencing Bi-Tempered loss, cite this [paper](https://arxiv.org/pdf/1906.
   url       = {http://arxiv.org/abs/1906.03361},
 }
 ```
+
+## Contributions
+We are eager to collaborate with you too! Please send us a pull request or open a github issue. Please see this doc for further [details](https://github.com/google/bi-tempered-loss/blob/master/CONTRIBUTING.md)
