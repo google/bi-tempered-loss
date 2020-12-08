@@ -6,6 +6,19 @@ Overview of the method is here: [Google AI Blogpost](https://ai.googleblog.com/2
 
 Also, explore the interactive [visualization](https://google.github.io/bi-tempered-loss/) that demonstrates the practical properties of the Bi-Tempered logistic loss.
 
+Bi-Tempered logistic loss is a generalized softmax cross-entropy loss function with bounded loss value per sample and a heavy-tail softmax probability function.
+
+Bi-tempered loss generalizes (with a bias correction term):
+
+- Zhang & Sabuncu. "Generalized cross entropy loss for training deep neural networks with noisy labels." In NeurIPS 2018.
+
+which is recovered when 0.0 <= t1 <= 1.0 and t2 = 1.0. It also includes:
+
+- Ding & Vishwanathan. "t-Logistic regression." In NeurIPS 2010.
+
+for t1 = 1.0 and t2 >= 1.0.
+
+Bi-tempered loss is equal to the softmax cross entropy loss when t1 = t2 = 1.0. For 0.0 <= t1 < 1.0 and t2 > 1.0, bi-tempered loss provides a more robust alternative to the cross entropy loss for handling label noise and outliers.
 
 ## TensorFlow
 
@@ -68,16 +81,12 @@ When referencing Bi-Tempered loss, cite this [paper](https://arxiv.org/pdf/1906.
 
 
 ```
-@article{bitemperedloss,
-  author    = {Ehsan Amid and
-               Manfred K. Warmuth and
-               Rohan Anil and
-               Tomer Koren},
-  title     = {Robust Bi-Tempered Logistic Loss Based on Bregman Divergences},
-  journal   = {CoRR},
-  volume    = {abs/1906.03361},
-  year      = {2019},
-  url       = {http://arxiv.org/abs/1906.03361},
+@inproceedings{amid2019robust,
+  title={Robust bi-tempered logistic loss based on bregman divergences},
+  author={Amid, Ehsan and Warmuth, Manfred KK and Anil, Rohan and Koren, Tomer},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={15013--15022},
+  year={2019}
 }
 ```
 
