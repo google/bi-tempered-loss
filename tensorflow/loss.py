@@ -18,11 +18,6 @@
 Source: https://bit.ly/3jSol8T
 """
 
-"""Robust Bi-Tempered Logistic Loss Based on Bregman Divergences.
-
-Source: https://bit.ly/3jSol8T
-"""
-
 import functools
 import tensorflow as tf
 
