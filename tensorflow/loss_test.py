@@ -23,7 +23,7 @@ import functools
 from absl.testing import absltest
 import tensorflow as tf
 
-from google3.third_party.google_research.google_research.bitempered_loss import loss
+import loss
 
 python_version = "PY3"
 

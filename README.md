@@ -20,7 +20,7 @@ for t1 = 1.0 and t2 >= 1.0.
 
 Bi-tempered loss is equal to the softmax cross entropy loss when t1 = t2 = 1.0. For 0.0 <= t1 < 1.0 and t2 > 1.0, bi-tempered loss provides a more robust alternative to the cross entropy loss for handling label noise and outliers.
 
-## TensorFlow
+## TensorFlow and JAX
 
 A replacement for standard logistic loss function: ```tf.losses.softmax_cross_entropy``` is available [here](https://github.com/google/bi-tempered-loss/blob/master/tensorflow/loss.py#L161)
 
@@ -47,27 +47,27 @@ def bi_tempered_logistic_loss(activations,
 
 Replacements are also available for the transfer functions:
 
-Tempered version of tf.nn.sigmoid:
+Tempered version of tf.nn.sigmoid and jax.nn.sigmoid:
 
 ```python
 def tempered_sigmoid(activations, t, num_iters=5):
   """Tempered sigmoid function.
   Args:
     activations: Activations for the positive class for binary classification.
-    t: Temperature tensor > 0.0.
+    t: Temperature > 0.0.
     num_iters: Number of iterations to run the method.
   Returns:
     A probabilities tensor.
   """
 ```
 
-Tempered version of tf.nn.softmax:
+Tempered version of tf.nn.softmax and jax.nn.softmax:
 ```python
 def tempered_softmax(activations, t, num_iters=5):
   """Tempered softmax function.
   Args:
     activations: A multi-dimensional tensor with last dimension `num_classes`.
-    t: Temperature tensor > 0.0.
+    t: Temperature > 0.0.
     num_iters: Number of iterations to run the method.
   Returns:
     A probabilities tensor.

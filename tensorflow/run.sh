@@ -19,6 +19,6 @@ set -x
 virtualenv -p python3 .
 source ./bin/activate
 
-pip install tensorflow
-pip install -r bitempered_loss/requirements.txt
-python -m bitempered_loss.loss_test
+pip3 install tensorflow
+pip3 install -r bitempered_loss/tensorflow/requirements.txt
+python -m bitempered_loss.tensorflow.loss_test
